@@ -1,0 +1,3 @@
+[submodule "external/TrackNetV3"]
+	path = external/TrackNetV3
+	url = https://github.com/qaz812345/TrackNetV3.git
