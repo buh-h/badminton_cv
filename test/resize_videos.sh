@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 INPUT_DIR="$(pwd)"
-OUTPUT_DIR="$(pwd)/resized}"
+OUTPUT_DIR="$(pwd)/resized"
 WIDTH=512
 HEIGHT=288
 CODEC="libx264"
@@ -10,11 +10,11 @@ PRESET="medium"
 
 while getopts "i:o:w:h:c" opt; do
   case $opt in
-    i) INPUT_DIR="OPTARG" ;;
-    o) OUTPUT_DIR="OPTARG" ;;
-    w) WIDTH="OPTARG" ;;
-    h) HEIGHT="OPTARG" ;;
-    c) CODEC="OPTARG" ;;
+    i) INPUT_DIR="$OPTARG" ;;
+    o) OUTPUT_DIR="$OPTARG" ;;
+    w) WIDTH="$OPTARG" ;;
+    h) HEIGHT="$OPTARG" ;;
+    c) CODEC="$OPTARG" ;;
     *) echo "Unknown flag"; exit 1 ;;
   esac
 done
@@ -22,7 +22,7 @@ done
 mkdir -p "$OUTPUT_DIR"
 
 for file in "$INPUT_DIR"/*.mp4; do
-  [ -e file] || continue
+  [ -e "$file" ] || continue
   filename=$(basename "$file")
   output="$OUTPUT_DIR/$filename"
 
@@ -30,10 +30,12 @@ for file in "$INPUT_DIR"/*.mp4; do
 
   SCALE="-vf scale=$WIDTH:$HEIGHT"
   
-  ffmpeg -r "$file" \
+  ffmpeg -i "$file" \
     $SCALE \
     -c:v "$CODEC" \
     -preset "$PRESET" \
     -crf "$CRF" \
     -c:a copy \
     "$output"
+
+done
