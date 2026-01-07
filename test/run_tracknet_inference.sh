@@ -50,6 +50,11 @@ if [ -z "$TRACKNET_DIR" ]; then
   exit 1
 fi
 
+if [ ! -f "$TRACKNET_DIR/predict.py" ]; then
+  echo "Error: predict.py not found in $TRACKNET_DIR"
+  exit 1
+fi
+
 TRACKNET_CKPT="${TRACKNET_CKPT:-$TRACKNET_DIR/ckpts/TrackNet_best.pt}"
 INPAINTNET_CKPT="${INPAINTNET_CKPT:-$TRACKNET_DIR/ckpts/InpaintNet_best.pt}"
 
@@ -58,7 +63,7 @@ mkdir -p "$OUTPUT_DIR"
 
 shopt -s nullglob
 for file in "$VIDEO_DIR"/*.mp4; do
-  python3 "$(TRACKNET_DIR)/predict.py" \
+  python3 "$TRACKNET_DIR/predict.py" \
     --video_file "$file" \
     --tracknet_file "$TRACKNET_CKPT" \
     --inpaintnet_file "$INPAINTNET_CKPT" \
