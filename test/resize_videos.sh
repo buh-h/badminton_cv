@@ -21,8 +21,8 @@ done
 
 mkdir -p "$OUTPUT_DIR"
 
+shopt -s nullglob
 for file in "$INPUT_DIR"/*.mp4; do
-  [ -e "$file" ] || continue
   filename=$(basename "$file")
   output="$OUTPUT_DIR/$filename"
 
