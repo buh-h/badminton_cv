@@ -31,7 +31,8 @@ for file in "$INPUT_DIR"/*.mp4; do
   SCALE="-vf scale=$WIDTH:$HEIGHT"
   
   ffmpeg -i "$file" \
-    $SCALE \
+    -vf "scale=WIDTH:HEIGHT" \
+    -vsync cfr \
     -c:v "$CODEC" \
     -preset "$PRESET" \
     -crf "$CRF" \
