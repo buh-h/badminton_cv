@@ -1,3 +1,9 @@
 videos/
 external/TrackNetV3/ckpts
 venv/
+*.csv
+*.json
+*.mp4
+*.png
+*.zip
+*.txt
