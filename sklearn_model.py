@@ -5,13 +5,23 @@ import pandas as pd
 import numpy as np
 import utils.general 
 
-# FEATURE_COLS = ["a", "b", "c", "dy", "start_y", "length", "peak", "peak_frame", "speed"]
-FEATURE_COLS = ["dy", "start_y", "length", "peak", "peak_frame", "speed"]
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import GaussianNB
+
+FEATURE_COLS = ["dy_norm", "start_y_norm", "length", "peak_norm", "peak_frame_frac", "speed_norm"]
 N_SPLITS = 5
+VIDEO_HEIGHT = 288
 
 def prepare_data(features):
     mapping = {"Kill": "Smash", "Push": "Drive", "Block": "Drop"}
-    features['shot'] = features['shot'].replace(mapping)
+    features["shot"] = features["shot"].replace(mapping)
+    features["peak_frame_frac"] = features["peak_frame"] / features["length"]
+    features["start_y_norm"] = features["start_y"] / VIDEO_HEIGHT
+    features["dy_norm"] = features["dy"] / VIDEO_HEIGHT
+    features["peak_norm"] = features["peak"] / VIDEO_HEIGHT
+    features["speed_norm"] = features["speed"] / VIDEO_HEIGHT
+    
     
     print(features)
     X = features[FEATURE_COLS].to_numpy(dtype=np.float32)
@@ -33,8 +43,8 @@ if __name__ == "__main__":
     print("Building model...")
     model = RandomForestClassifier(
         n_estimators=400,
-        max_depth=20,
-        min_samples_leaf=3,
+        max_depth=10,
+        min_samples_leaf=5,
         max_features="sqrt",
         class_weight="balanced",
         random_state=42,
